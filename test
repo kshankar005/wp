@@ -12,3 +12,24 @@ United Kingdom Toll free:   0800-051-7038 Access Code 666 511 705
 
 
 https://www.thebridalbox.com/articles/best-love-story-novels-by-indian-authors_0045553/
+
+
+
+Hi all,
+
+I checked the EBS code.
+Basically they are checking 3 conditions for each new mapping. If the new rows is true for one of the among below three, the insertion will be failed and error will be triggered. In this case we have to show all the mappings irrespective of end dated or not, so that user has clarity and he/she can check where they are entering the date wrongly and correct it.
+We can follow the same when inserting a new row.
+
+1.	New Effective Start Date BETWEEN existing Effective Start Date and existing Effective End Date (this check has to be done for all the mappings for that service code, src sys id, segment, pl_category, currency depends on the system)
+2.	New Effective End Date BETWEEN existing Effective Start Date and existing Effective End Date (for all mappings like above)
+3.	New Effective Start Date < existing Effective Start Date AND New Effective End Date > existing Effective End Date (for all mappings like above)
+
+If they want to end date the mapping on the same date the above logic will stop it due to overlap date ranges. So, we have to come up with Active Flag. But even though there are chance to get unique constraint. Question is do we need it? 
+From UI we have the above logic there won’t be a chance to get overlap date ranges. 
+But the DQ rule check procedure after CRT load it inserting logic for XREF event reference if the mapping is not present for that bill date (hoping that it is changed to bill date, it was with processing date before. Otherwise it has to be changed to bill date) need to be revisited wrt date ranges.
+
+As discussed please don’t do any code changes. Only analysis is needed for the time being. We can again discuss on this topic.
+
+Thanks,
+Vamsi Kasina
